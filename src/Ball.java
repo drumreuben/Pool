@@ -1,4 +1,11 @@
+import sun.audio.AudioPlayer;
+import sun.audio.AudioStream;
+
+import javax.sound.sampled.FloatControl;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.util.Calendar;
 
@@ -125,6 +132,20 @@ public class Ball {
         return distance < radius + b2.radius;
     }
 
+    //plays sound of two balls colliding
+    public void playSound(){
+        try{
+            String soundFile = "C:\\Users\\Reuben\\Desktop\\IdeaProjects\\Pool\\src\\108615__juskiddink__billiard-balls-single-hit-dry.wav";
+            InputStream in = new FileInputStream(soundFile);
+            AudioStream audio = new AudioStream(in);
+            
+            AudioPlayer.player.start(audio);
+        } catch (Exception e){
+            System.out.println("Couldn't load sound file!");
+        }
+    }
+
+    //calculates new velocity vectors after two balls collide
     public void collideWithBall(Ball b2) {
 
         Vector normal = new Vector(b2.getxPos() - xPos, b2.getyPos() - yPos);
@@ -152,6 +173,7 @@ public class Ball {
             step();
             b2.step();
         }
+        playSound();
     }
 }
 
